@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profile Maker</title>
+<style>
+  :root {
+    --ink: #14213d;
+    --paper: #f7f8fb;
+    --card: #ffffff;
+    --line: #d5d9e3;
+    --muted: #5b6478;
+    --accent: #1f6f78;
+    --accent-dark: #17555c;
+    --error: #b3261e;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  header { background: var(--ink); color: #fff; padding: 28px 24px; }
+  header h1 { font-family: Georgia, "Times New Roman", serif; font-size: 1.9rem; font-weight: 700; letter-spacing: .2px; }
+  header p { color: #c4cbe0; margin-top: 4px; }
+  main {
+    max-width: 1100px; margin: 0 auto; padding: 28px 20px 48px;
+    display: grid; grid-template-columns: 1fr 380px; gap: 28px; align-items: start;
+  }
+  @media (max-width: 860px) { main { grid-template-columns: 1fr; } }
+
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 24px; }
+  .panel h2 { font-family: Georgia, serif; font-size: 1.25rem; margin-bottom: 16px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .full { grid-column: 1 / -1; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+
+  label { display: block; font-size: .9rem; font-weight: 600; margin-bottom: 4px; }
+  input, select, textarea {
+    width: 100%; padding: 10px 12px; font: inherit; color: inherit;
+    background: #fff; border: 1px solid var(--line); border-radius: 6px;
+  }
+  textarea { resize: vertical; min-height: 72px; }
+  input[readonly] { background: #eef1f6; color: var(--muted); }
+  input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, .upload:focus-within {
+    outline: 3px solid var(--accent); outline-offset: 1px;
+  }
+  .error-msg { color: var(--error); font-size: .82rem; min-height: 1.1em; margin-top: 2px; }
+  .invalid { border-color: var(--error); }
+
+  .photo-row { display: flex; align-items: center; gap: 16px; }
+  .photo-preview {
+    width: 96px; height: 96px; border-radius: 50%; border: 2px dashed var(--line);
+    background: #eef1f6 center / cover no-repeat; flex: none;
+    display: grid; place-items: center; color: var(--muted); font-size: .75rem; text-align: center;
+  }
+  .photo-preview.has-img { border-style: solid; border-color: var(--accent); }
+  .upload input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .upload span, button {
+    display: inline-block; font: inherit; font-weight: 600; cursor: pointer;
+    padding: 10px 16px; border-radius: 6px; border: 1px solid var(--accent);
+    background: var(--accent); color: #fff;
+  }
+  .upload { position: relative; }
+  .upload span:hover, button:hover { background: var(--accent-dark); }
+  button.secondary { background: #fff; color: var(--accent); }
+  button.secondary:hover { background: #eaf4f5; }
+  .hint { color: var(--muted); font-size: .82rem; margin-top: 6px; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+
+  /* Profile card */
+  .profile-card { position: sticky; top: 20px; overflow: hidden; padding: 0; }
+  .card-top { background: var(--ink); height: 84px; }
+  .card-body { padding: 0 24px 24px; }
+  .avatar {
+    width: 112px; height: 112px; border-radius: 50%; margin-top: -56px;
+    border: 4px solid #fff; background: #dfe4ee center / cover no-repeat;
+    display: grid; place-items: center; font: 700 2rem Georgia, serif; color: var(--muted);
+  }
+  .card-name { font-family: Georgia, serif; font-size: 1.5rem; margin-top: 12px; overflow-wrap: anywhere; }
+  .card-prof { color: var(--accent); font-weight: 600; }
+  dl { margin-top: 18px; border-top: 1px solid var(--line); }
+  .row { display: grid; grid-template-columns: 98px 1fr; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+  dt { color: var(--muted); font-size: .88rem; }
+  dd { margin: 0; overflow-wrap: anywhere; }
+  .empty { color: #9aa2b4; }
+  .saved-note { margin-top: 14px; color: var(--accent-dark); font-weight: 600; min-height: 1.4em; }
+
+  @media print {
+    header, .form-panel, .actions, .saved-note { display: none; }
+    main { display: block; padding: 0; }
+    .profile-card { position: static; border: none; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Profile Maker</h1>
+  <p>Fill in your details and watch your profile card build itself.</p>
+</header>
+
+<main>
+  <section class="panel form-panel" aria-labelledby="form-title">
+    <h2 id="form-title">Your details</h2>
+    <div id="profileForm" class="grid">
+
+      <div class="full">
+        <label for="photoInput">Profile photo</label>
+        <div class="photo-row">
+          <div class="photo-preview" id="photoPreview">No photo</div>
+          <div>
+            <label class="upload">
+              <input type="file" id="photoInput" accept="image/*">
+              <span>Choose photo</span>
+            </label>
+            <p class="hint">JPG, PNG or WebP, up to 3 MB.</p>
+            <div class="error-msg" id="err-photo"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="full">
+        <label for="fullName">Full name</label>
+        <input id="fullName" type="text" autocomplete="name" placeholder="e.g. Maria Santos">
+        <div class="error-msg" id="err-fullName"></div>
+      </div>
+
+      <div>
+        <label for="birthdate">Birthdate</label>
+        <input id="birthdate" type="date" autocomplete="bday">
+        <div class="error-msg" id="err-birthdate"></div>
+      </div>
+
+      <div>
+        <label for="age">Age</label>
+        <input id="age" type="text" readonly placeholder="Calculated from birthdate">
+      </div>
+
+      <div>
+        <label for="gender">Gender</label>
+        <select id="gender">
+          <option value="">Select gender</option>
+          <option>Female</option>
+          <option>Male</option>
+          <option>Non-binary</option>
+          <option>Prefer not to say</option>
+        </select>
+        <div class="error-msg" id="err-gender"></div>
+      </div>
+
+      <div>
+        <label for="profession">Profession</label>
+        <input id="profession" type="text" placeholder="e.g. Civil engineer">
+        <div class="error-msg" id="err-profession"></div>
+      </div>
+
+      <div class="full">
+        <label for="address">Address</label>
+        <textarea id="address" autocomplete="street-address" placeholder="Street, city, country"></textarea>
+        <div class="error-msg" id="err-address"></div>
+      </div>
+
+      <div>
+        <label for="email">Email address</label>
+        <input id="email" type="email" autocomplete="email" placeholder="name@example.com">
+        <div class="error-msg" id="err-email"></div>
+      </div>
+
+      <div>
+        <label for="phone">Phone number</label>
+        <input id="phone" type="tel" autocomplete="tel" placeholder="+63 912 345 6789">
+        <div class="error-msg" id="err-phone"></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" id="saveBtn">Save profile</button>
+      <button type="button" id="printBtn" class="secondary">Print or save as PDF</button>
+      <button type="button" id="clearBtn" class="secondary">Clear all</button>
+    </div>
+  </section>
+
+  <aside class="panel profile-card" aria-label="Profile preview">
+    <div class="card-top"></div>
+    <div class="card-body">
+      <div class="avatar" id="cardAvatar">?</div>
+      <h2 class="card-name" id="cardName"><span class="empty">Your name</span></h2>
+      <div class="card-prof" id="cardProf"></div>
+      <dl>
+        <div class="row"><dt>Age</dt><dd id="cardAge"></dd></div>
+        <div class="row"><dt>Gender</dt><dd id="cardGender"></dd></div>
+        <div class="row"><dt>Birthdate</dt><dd id="cardBirth"></dd></div>
+        <div class="row"><dt>Address</dt><dd id="cardAddress"></dd></div>
+        <div class="row"><dt>Email</dt><dd id="cardEmail"></dd></div>
+        <div class="row"><dt>Phone</dt><dd id="cardPhone"></dd></div>
+      </dl>
+      <p class="saved-note" id="savedNote" role="status"></p>
+    </div>
+  </aside>
+</main>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const fields = ["fullName", "birthdate", "gender", "profession", "address", "email", "phone"];
+  const STORAGE_KEY = "profile-maker-data";
+  let photoData = "";
+
+  const rules = {
+    fullName:   (v) => v.trim().length >= 2 ? "" : "Enter your full name.",
+    birthdate:  (v) => {
+      if (!v) return "Choose your birthdate.";
+      return new Date(v) > new Date() ? "Birthdate can't be in the future." : "";
+    },
+    gender:     (v) => v ? "" : "Select a gender.",
+    profession: (v) => v.trim() ? "" : "Enter your profession.",
+    address:    (v) => v.trim().length >= 5 ? "" : "Enter your full address.",
+    email:      (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? "" : "Enter a valid email, like name@example.com.",
+    phone:      (v) => /^\+?[0-9\s().-]{7,20}$/.test(v.trim()) ? "" : "Enter a valid phone number (7–20 digits)."
+  };
+
+  function calcAge(dateStr) {
+    if (!dateStr) return "";
+    const b = new Date(dateStr), t = new Date();
+    let age = t.getFullYear() - b.getFullYear();
+    const m = t.getMonth() - b.getMonth();
+    if (m < 0 || (m === 0 && t.getDate() < b.getDate())) age--;
+    return age >= 0 ? String(age) : "";
+  }
+
+  function show(id, value) {
+    const el = $(id);
+    if (value) { el.textContent = value; el.classList.remove("empty"); }
+    else { el.textContent = "Not provided"; el.classList.add("empty"); }
+  }
+
+  function render() {
+    const name = $("fullName").value.trim();
+    const age = calcAge($("birthdate").value);
+    $("age").value = age;
+
+    $("cardName").innerHTML = "";
+    const nameEl = document.createElement("span");
+    nameEl.textContent = name || "Your name";
+    if (!name) nameEl.className = "empty";
+    $("cardName").appendChild(nameEl);
+
+    $("cardProf").textContent = $("profession").value.trim();
+    show("cardAge", age ? age + " years old" : "");
+    show("cardGender", $("gender").value);
+    show("cardBirth", $("birthdate").value
+      ? new Date($("birthdate").value + "T00:00:00").toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })
+      : "");
+    show("cardAddress", $("address").value.trim());
+    show("cardEmail", $("email").value.trim());
+    show("cardPhone", $("phone").value.trim());
+
+    const avatar = $("cardAvatar");
+    if (photoData) {
+      avatar.style.backgroundImage = `url("${photoData}")`;
+      avatar.textContent = "";
+    } else {
+      avatar.style.backgroundImage = "";
+      avatar.textContent = name ? name[0].toUpperCase() : "?";
+    }
+    const preview = $("photoPreview");
+    if (photoData) {
+      preview.style.backgroundImage = `url("${photoData}")`;
+      preview.textContent = "";
+      preview.classList.add("has-img");
+    } else {
+      preview.style.backgroundImage = "";
+      preview.textContent = "No photo";
+      preview.classList.remove("has-img");
+    }
+  }
+
+  function validateField(id) {
+    const msg = rules[id]($(id).value);
+    $("err-" + id).textContent = msg;
+    $(id).classList.toggle("invalid", !!msg);
+    return !msg;
+  }
+
+  function validateAll() {
+    let firstBad = null;
+    fields.forEach((id) => { if (!validateField(id) && !firstBad) firstBad = id; });
+    if (firstBad) $(firstBad).focus();
+    return !firstBad;
+  }
+
+  // Photo upload
+  $("photoInput").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    const err = $("err-photo");
+    err.textContent = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { err.textContent = "Choose an image file."; return; }
+    if (file.size > 3 * 1024 * 1024) { err.textContent = "Photo is larger than 3 MB. Choose a smaller one."; return; }
+    const reader = new FileReader();
+    reader.onload = () => { photoData = reader.result; render(); };
+    reader.onerror = () => { err.textContent = "Couldn't read that file. Try another photo."; };
+    reader.readAsDataURL(file);
+  });
+
+  // Live updates
+  fields.forEach((id) => {
+    const ev = (id === "gender" || id === "birthdate") ? "change" : "input";
+    $(id).addEventListener(ev, () => { render(); if ($("err-" + id).textContent) validateField(id); });
+    $(id).addEventListener("blur", () => { if ($(id).value) validateField(id); });
+  });
+
+  // Save (browser storage; safe to fail)
+  $("saveBtn").addEventListener("click", () => {
+    if (!validateAll()) { $("savedNote").textContent = "Fix the highlighted fields, then save again."; return; }
+    const data = { photo: photoData };
+    fields.forEach((id) => (data[id] = $(id).value));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      $("savedNote").textContent = "Profile saved.";
+    } catch (e) {
+      $("savedNote").textContent = "Couldn't save in this browser. Use Print or save as PDF instead.";
+    }
+  });
+
+  $("printBtn").addEventListener("click", () => {
+    if (validateAll()) window.print();
+  });
+
+  $("clearBtn").addEventListener("click", () => {
+    fields.forEach((id) => { $(id).value = ""; $("err-" + id).textContent = ""; $(id).classList.remove("invalid"); });
+    photoData = ""; $("photoInput").value = ""; $("err-photo").textContent = "";
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    $("savedNote").textContent = "";
+    render();
+  });
+
+  // Load saved profile
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+    if (saved) {
+      fields.forEach((id) => { if (saved[id]) $(id).value = saved[id]; });
+      photoData = saved.photo || "";
+    }
+  } catch (e) {}
+  render();
+</script>
+</body>
+</html>
