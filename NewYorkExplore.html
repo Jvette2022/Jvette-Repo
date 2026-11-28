@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>New York City: A Visitor’s Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+:root{--bg:#eef1f4;--surface:#fff;--ink:#14202e;--muted:#52606f;--line:#cfd6de;--red:#ee352e;--green:#00933c;--blue:#0039a6;--orange:#ff6319;--yellow:#fccc0a;--accent:#0039a6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e151d;--surface:#17212c;--ink:#eef1f4;--muted:#9fadbb;--line:#2b3947;--accent:#6c9bff}}
+:root[data-theme="dark"]{--bg:#0e151d;--surface:#17212c;--ink:#eef1f4;--muted:#9fadbb;--line:#2b3947;--accent:#6c9bff}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Archivo",system-ui,sans-serif;font-size:17px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.serif{font-family:"Newsreader",Georgia,serif}
+header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--ink);color:var(--bg)}
+.nav .wrap{display:flex;align-items:center;gap:18px;height:56px;overflow-x:auto;white-space:nowrap}
+.nav b{font-stretch:75%;font-weight:800;font-size:20px;margin-right:auto}
+.nav a{text-decoration:none;font-weight:600;font-size:15px;opacity:.85}
+.nav a:hover{opacity:1;text-decoration:underline}
+.bullet{display:inline-flex;align-items:center;justify-content:center;width:1.9em;height:1.9em;border-radius:50%;font-weight:800;font-size:.9em;line-height:1;color:#fff;flex:none}
+.bullet.y{color:#14202e}
+.hero{background:var(--ink);color:var(--bg);padding:56px 0 64px;overflow:hidden}
+.hero h1{font-stretch:62%;font-weight:900;font-size:clamp(64px,17vw,190px);line-height:.86;margin:0 0 28px;letter-spacing:-.01em}
+.hero p{font-size:clamp(19px,2.4vw,24px);max-width:34ch;margin:0 0 28px}
+.lines{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-block;background:var(--yellow);color:#14202e;font-weight:700;text-decoration:none;padding:12px 22px;border-radius:999px;margin-top:6px}
+section{padding:72px 0}
+h2{font-stretch:75%;font-weight:800;font-size:clamp(36px,6vw,60px);line-height:1;margin:0 0 12px}
+.lede{color:var(--muted);max-width:56ch;margin:0 0 32px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.chip{font:inherit;font-weight:600;border:2px solid var(--ink);background:transparent;color:var(--ink);padding:6px 16px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px}
+.card{background:var(--surface);border-left:8px solid var(--c);border-radius:4px 14px 14px 4px;padding:20px 22px;display:flex;flex-direction:column;gap:8px}
+.card h3{margin:0;font-size:22px;font-stretch:85%;font-weight:700;line-height:1.15}
+.card p{margin:0;color:var(--muted);font-size:16px}
+.meta{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);margin-top:auto;padding-top:6px;flex-wrap:wrap}
+.tabs{display:flex;gap:10px;margin-bottom:24px}
+.tab{font:inherit;font-weight:700;display:flex;align-items:center;gap:10px;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:6px 18px 6px 8px;cursor:pointer}
+.tab[aria-selected="true"]{border-color:var(--ink)}
+.plan{background:var(--surface);border-radius:14px;padding:8px 26px}
+.stop{display:grid;grid-template-columns:96px 1fr;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
+.stop:last-child{border:0}
+.stop time{font-weight:700;font-stretch:80%}
+.stop h4{margin:0 0 2px;font-size:19px}
+.stop p{margin:0;color:var(--muted);font-size:16px}
+.alt{background:var(--surface)}
+.eat{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px}
+.eat h3{font-family:"Newsreader",serif;font-weight:500;font-size:26px;margin:0 0 6px}
+.eat p{margin:0;color:var(--muted)}
+.tips{columns:2 320px;column-gap:40px}
+.tips div{break-inside:avoid;border-top:3px solid var(--ink);padding:12px 0 22px}
+.tips h3{margin:0 0 4px;font-size:20px}
+.tips p{margin:0;color:var(--muted)}
+footer{background:var(--ink);color:var(--bg);padding:36px 0;font-size:15px}
+footer p{margin:0 0 6px;opacity:.8}
+@media (max-width:560px){.stop{grid-template-columns:1fr;gap:4px}.plan{padding:4px 18px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap">
+<b>NYC Guide</b><a href="#places">Places</a><a href="#plans">Itineraries</a><a href="#eat">Eat</a><a href="#around">Getting around</a><a href="#when">When to go</a>
+</div></header>
+
+<div class="hero"><div class="wrap">
+<h1>New York<br>City</h1>
+<p>Five boroughs, 472 subway stations, and more to see than any trip can hold. Start here.</p>
+<div class="lines" aria-hidden="true">
+<span class="bullet" style="background:var(--red)">1</span><span class="bullet" style="background:var(--green)">4</span><span class="bullet" style="background:var(--blue)">A</span><span class="bullet" style="background:var(--orange)">F</span><span class="bullet y" style="background:var(--yellow)">N</span>
+</div>
+<a class="btn" href="#plans">Plan your days</a>
+</div></div>
+
+<section id="places"><div class="wrap">
+<h2>Where to go</h2>
+<p class="lede">Each place is marked with the subway color that gets you closest. Filter by borough.</p>
+<div class="chips" id="chips" role="group" aria-label="Filter by borough"></div>
+<div class="grid" id="grid"></div>
+</div></section>
+
+<section id="plans" class="alt"><div class="wrap">
+<h2>Itineraries</h2>
+<p class="lede">Choose a length. Each day groups stops that sit near each other, so you spend time looking, not riding.</p>
+<div class="tabs" id="tabs" role="tablist"></div>
+<div class="plan" id="plan" role="tabpanel"></div>
+</div></section>
+
+<section id="eat"><div class="wrap">
+<h2>What to eat</h2>
+<p class="lede">The best meals in New York are often cheap, fast, and eaten standing up.</p>
+<div class="eat">
+<div><h3>Pizza by the slice</h3><p>A plain cheese slice from a corner shop runs a few dollars. Fold it lengthwise, the way locals do.</p></div>
+<div><h3>Bagels with lox</h3><p>Order an everything bagel with cream cheese and smoked salmon from a neighborhood bagel shop, early.</p></div>
+<div><h3>Halal cart platters</h3><p>Chicken over rice with white sauce, from a street cart in Midtown. Filling, quick, and inexpensive.</p></div>
+<div><h3>Dim sum in Chinatown</h3><p>Go with a group so you can order many small plates, then wander Mott Street afterward.</p></div>
+<div><h3>Deli pastrami</h3><p>A towering hot pastrami on rye at a Lower East Side deli. Share one; they are huge.</p></div>
+<div><h3>Dollar-slice energy, any hour</h3><p>Many places stay open late. Hungry at midnight is a New York problem with easy answers.</p></div>
+</div>
+</div></section>
+
+<section id="around" class="alt"><div class="wrap">
+<h2>Getting around</h2>
+<p class="lede">You do not need a car. You will want comfortable shoes.</p>
+<div class="tips">
+<div><h3>Tap to pay on the subway</h3><p>The subway and buses accept contactless cards and phones at the turnstile. No need to buy a separate card.</p></div>
+<div><h3>Check uptown or downtown</h3><p>Subway entrances are labeled by direction. Confirm which way your train goes before you swipe in.</p></div>
+<div><h3>Walk the grid</h3><p>In Manhattan above Houston Street, avenues run north–south and streets run east–west. Twenty blocks is about a mile.</p></div>
+<div><h3>Use the ferry</h3><p>The Staten Island Ferry is free and passes the Statue of Liberty. It is the cheapest harbor cruise there is.</p></div>
+<div><h3>Airports</h3><p>JFK and Newark connect to the city by rail. LaGuardia is best reached by bus or taxi. Leave extra time.</p></div>
+<div><h3>Stay in your lane</h3><p>On crowded sidewalks, walk steadily and step aside before you stop to take photos or check a map.</p></div>
+</div>
+</div></section>
+
+<section id="when"><div class="wrap">
+<h2>When to go</h2>
+<p class="lede">Every season works. They just feel different.</p>
+<div class="grid">
+<div class="card" style="--c:var(--green)"><h3>Spring</h3><p>Mild days and cherry blossoms in Central Park and the Brooklyn Botanic Garden. Pack layers for changing weather.</p></div>
+<div class="card" style="--c:var(--yellow)"><h3>Summer</h3><p>Hot and humid, with free outdoor concerts, rooftop bars, and ferries to the beach. Book hotels early.</p></div>
+<div class="card" style="--c:var(--orange)"><h3>Fall</h3><p>Crisp air and bright foliage in the parks. Often the most comfortable season for walking all day.</p></div>
+<div class="card" style="--c:var(--blue)"><h3>Winter</h3><p>Cold, with holiday windows, ice skating, and cozy museums. Fewer crowds in January and February.</p></div>
+</div>
+</div></section>
+
+<footer><div class="wrap"><p>An independent visitor’s guide. Hours, prices, and ticket rules change, so check each attraction’s official site before you go.</p></div></footer>
+
+<script>
+var L={r:["var(--red)","1",""],g:["var(--green)","4",""],b:["var(--blue)","A",""],o:["var(--orange)","F",""],y:["var(--yellow)","N","y"]};
+var places=[
+["Statue of Liberty & Ellis Island","Manhattan","r","Take the ferry from Battery Park to see Lady Liberty up close and walk the immigration museum on Ellis Island. Reserve ahead.","Ferry from South Ferry"],
+["Central Park","Manhattan","y","Rent a rowboat at the Loeb Boathouse, cross Bow Bridge, and find Strawberry Fields on a slow loop through 843 acres.","N/Q/R/W to 5 Av/59 St"],
+["Empire State Building","Manhattan","o","The classic Art Deco skyscraper. The 86th-floor deck is open-air; go near sunset to see the city turn on its lights.","B/D/F/M to 34 St"],
+["Metropolitan Museum of Art","Manhattan","g","Egyptian temples, European masters, and arms and armor in one building. Pick two wings, not twenty.","4/5/6 to 86 St"],
+["The High Line","Manhattan","b","A former freight railway turned elevated garden, running through Chelsea with views of the Hudson and public art.","A/C/E to 14 St"],
+["Times Square","Manhattan","y","Bright, loud, and best seen once, at night. Stand on the red steps, then leave for a quieter dinner.","N/Q/R/W to Times Sq"],
+["9/11 Memorial & Museum","Manhattan","r","Twin reflecting pools mark where the towers stood. The museum is moving and takes at least two hours.","1 to Cortlandt St"],
+["Grand Central Terminal","Manhattan","g","Look up at the celestial ceiling in the main concourse, and whisper across the arches at the Oyster Bar.","4/5/6 to Grand Central"],
+["Brooklyn Bridge","Brooklyn","o","Walk from Brooklyn to Manhattan along the wooden promenade for a skyline view. Go early to avoid crowds.","A/C to High St"],
+["DUMBO & Brooklyn Bridge Park","Brooklyn","o","Cobblestone streets, the famous Washington Street photo, and a waterfront park with Manhattan across the river.","F to York St"],
+["Prospect Park & Botanic Garden","Brooklyn","g","Brooklyn’s answer to Central Park, with meadows, a lake, and a garden next door that is gorgeous in spring.","2/3 to Grand Army Plaza"],
+["Coney Island","Brooklyn","o","A boardwalk, the Cyclone roller coaster, and hot dogs near the beach. A good summer afternoon.","D/F/N/Q to Coney Island"],
+["MoMA PS1 & Long Island City","Queens","y","Contemporary art in a former school, then a waterfront stroll with a postcard view of the Midtown skyline.","7 to Court Sq"],
+["Flushing Main Street","Queens","r","A food-lover’s neighborhood packed with dumplings, noodle shops, and bubble tea. Come hungry.","7 to Flushing–Main St"],
+["New York Botanical Garden","Bronx","g","Greenhouses and old-growth forest in the Bronx. Check for seasonal shows like the orchid display.","Metro-North from Grand Central"],
+["Arthur Avenue","Bronx","g","The Bronx’s real Little Italy, with salumerias, bakeries, and old-school red-sauce restaurants.","4 to Fordham Rd, then bus"],
+["Staten Island Ferry","Staten Island","r","Free, 25 minutes, and passes the Statue of Liberty. Ride it round trip and stay on the deck.","1 to South Ferry"]
+];
+var boros=["All","Manhattan","Brooklyn","Queens","Bronx","Staten Island"],cur="All";
+function renderChips(){var el=document.getElementById("chips");el.innerHTML="";boros.forEach(function(b){var c=document.createElement("button");c.className="chip";c.textContent=b;c.setAttribute("aria-pressed",b===cur);c.onclick=function(){cur=b;renderChips();renderGrid()};el.appendChild(c)})}
+function bullet(k){var l=L[k];return '<span class="bullet '+l[2]+'" style="background:'+l[0]+'" aria-hidden="true">'+l[1]+'</span>'}
+function renderGrid(){var g=document.getElementById("grid");g.innerHTML="";places.filter(function(p){return cur==="All"||p[1]===cur}).forEach(function(p){var d=document.createElement("article");d.className="card";d.style.setProperty("--c",L[p[2]][0]);d.innerHTML="<h3></h3><p></p><div class='meta'>"+bullet(p[2])+"<span></span></div>";d.querySelector("h3").textContent=p[0];d.querySelector("p").textContent=p[3];d.querySelector(".meta span:last-child").textContent=p[4]+" · "+p[1];g.appendChild(d)})}
+var plans={
+"1 day":{k:"r",d:[["9:00","Battery Park & Statue of Liberty ferry","Start early. Book the ferry ahead of time and bring a light jacket for the water."],["12:30","9/11 Memorial and lunch downtown","Walk up from the Oculus and eat nearby."],["15:00","Brooklyn Bridge on foot","Cross toward Brooklyn and look back at the skyline."],["17:30","DUMBO and sunset","Take photos on Washington Street and have dinner by the river."]]},
+"3 days":{k:"g",d:[["Day 1 AM","Statue of Liberty & Lower Manhattan","Ferry, memorial, and the Financial District."],["Day 1 PM","Brooklyn Bridge & DUMBO","Walk across, then eat dinner in Brooklyn."],["Day 2 AM","Metropolitan Museum of Art","Pick two galleries, then picnic in Central Park."],["Day 2 PM","Central Park & Upper West Side","Bow Bridge, Strawberry Fields, and a stroll along Columbus Ave."],["Day 3 AM","High Line & Chelsea Market","Walk the High Line south to north, then snack at the market."],["Day 3 PM","Grand Central & Empire State","See the concourse, then the skyline from above at dusk."]]},
+"5 days":{k:"b",d:[["Day 1","Lower Manhattan","Statue of Liberty, the memorial, Wall Street, and Chinatown dinner."],["Day 2","Brooklyn","Bridge walk, DUMBO, Prospect Park, and an evening in Williamsburg."],["Day 3","Museum Mile & Central Park","The Met, a park loop, and the Upper East Side."],["Day 4","Queens & the Bronx","Flushing for lunch, then the Botanical Garden or Arthur Avenue."],["Day 5","Midtown & the High Line","Grand Central, Empire State, Times Square at night."]]}
+};
+var curPlan="1 day";
+function renderTabs(){var t=document.getElementById("tabs");t.innerHTML="";Object.keys(plans).forEach(function(n){var b=document.createElement("button");b.className="tab";b.setAttribute("role","tab");b.setAttribute("aria-selected",n===curPlan);b.innerHTML=bullet(plans[n].k)+"<span></span>";b.querySelector("span:last-child").textContent=n;b.onclick=function(){curPlan=n;renderTabs();renderPlan()};t.appendChild(b)})}
+function renderPlan(){var p=document.getElementById("plan");p.innerHTML="";plans[curPlan].d.forEach(function(s){var d=document.createElement("div");d.className="stop";d.innerHTML="<time></time><div><h4></h4><p></p></div>";d.querySelector("time").textContent=s[0];d.querySelector("h4").textContent=s[1];d.querySelector("p").textContent=s[2];p.appendChild(d)})}
+renderChips();renderGrid();renderTabs();renderPlan();
+</script>
+</body>
+</html>
